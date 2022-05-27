@@ -8,6 +8,10 @@ import {
 
 import Home from './pages/Home'
 import Pessoa from './pages/Pessoa';
+import Endereco from './pages/Endereco'
+
+
+
 function Rotas() {
 
     return (
@@ -15,6 +19,7 @@ function Rotas() {
         <Routes>
             <Route path='/' element={<Home />} />
             <Route path='/pessoa' element={<Pessoa />} />
+            <Route path='/andress' element={<Endereco />} />
         </Routes>
     );
 

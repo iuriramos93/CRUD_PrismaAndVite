@@ -3,7 +3,7 @@ type Pessoa = {
     id: number
     name: string
     cpf: string
-    endereco: {
+    Endereco: [{
         andress: string
         number: string
         bairro: string
@@ -11,9 +11,22 @@ type Pessoa = {
         cep: string
         city: string
         uf: string
-    }
-
-
+    }]
 }
 
-export type { Pessoa }
+type EnderecoType = {
+    id: number
+    andress: string
+    number: string
+    bairro: string
+    complemento: string
+    cep: string
+    city: string
+    uf: string
+    Pessoa: {
+        name: string
+
+    }
+}
+
+export type { Pessoa, EnderecoType }

@@ -7,7 +7,7 @@ const prisma = new PrismaClient();
 class PessoaController {
   async ListPessoa(req: any, res: any) {
     const pessoas = await prisma.pessoa.findMany({
-      include: { endereco: true },
+      include: { Endereco: true },
     });
 
     // console.log(pessoas);
@@ -16,21 +16,24 @@ class PessoaController {
 
   async createPessoa(req: { body: Pessoa }, res: any) {
     const pessoa = req.body;
+
     try {
       await prisma.pessoa.create({
         data: {
           name: pessoa.name,
           cpf: pessoa.cpf,
-          endereco: {
-            create: {
-              andress: pessoa.andress,
-              number: pessoa.number,
-              bairro: pessoa.bairro,
-              complemento: pessoa.complemento,
-              cep: pessoa.cep,
-              city: pessoa.city,
-              uf: pessoa.uf,
-            },
+          Endereco: {
+            create: [
+              {
+                andress: pessoa.endereco[0].andress,
+                number: pessoa.endereco[0].number,
+                bairro: pessoa.endereco[0].bairro,
+                complemento: pessoa.endereco[0].complemento,
+                cep: pessoa.endereco[0].cep,
+                city: pessoa.endereco[0].city,
+                uf: pessoa.endereco[0].uf,
+              },
+            ],
           },
         },
       });
@@ -69,7 +72,7 @@ class PessoaController {
     try {
       const get_pessoa = await prisma.pessoa.findUnique({
         where: { id: id },
-        include: { endereco: true },
+        include: { Endereco: true },
       });
       if (get_pessoa !== null) {
         res.status(200).json({
@@ -88,11 +91,10 @@ class PessoaController {
     const id = Number(req.params.id);
 
     try {
-      const delete_pessoa = await prisma.pessoa.delete({
-        where: { id: id },
+      const delete_endereco = await prisma.endereco.deleteMany({
+        where: { pessoa_id: id },
       });
-
-      const delete_endereco = await prisma.endereco.delete({
+      const delete_pessoa = await prisma.pessoa.delete({
         where: { id: id },
       });
 
@@ -101,7 +103,7 @@ class PessoaController {
         pessoa: {
           name: delete_pessoa.name,
         },
-        endereco: delete_endereco.andress,
+        endereco: delete_endereco,
       });
     } catch (error) {
       console.log(error);

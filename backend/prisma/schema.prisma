@@ -11,14 +11,15 @@ datasource db {
 }
 
 model Pessoa {
-  id          Int      @id @default(autoincrement())
-  name        String
-  cpf         String   @unique
-  endereco_id Int
-  endereco    Endereco @relation(fields: [endereco_id], references: [id])
+  id   Int    @id @default(autoincrement())
+  name String
+  cpf  String @unique
 
 
 
+
+
+  Endereco Endereco[]
 }
 
 model Endereco {
@@ -30,6 +31,6 @@ model Endereco {
   cep         String
   city        String
   uf          String
-
-  Pessoa Pessoa[]
+  pessoa_id   Int
+  Pessoa      Pessoa @relation(fields: [pessoa_id], references: [id])
 }
